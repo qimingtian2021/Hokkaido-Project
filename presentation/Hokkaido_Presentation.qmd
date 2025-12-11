@@ -1,0 +1,108 @@
+---
+title: "Hokkaidō Island: Data Exploration"
+author: "Qiming Tian"
+format: revealjs
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+library(dplyr)
+library(readr)
+library(ggplot2)
+pop <- read_csv("../data/hokkaido_population.csv")
+climate <- read_csv("../data/hokkaido_climate.csv")
+eq <- read_csv("../data/earthquakes_japan.csv")
+```
+
+# Overview
+
+- Population trends  
+- Climate changes  
+- Earthquake activity  
+- Key insights  
+
+---
+
+# Hokkaidō
+
+- Northernmost island of Japan  
+- Cold climate with heavy snowfall  
+- Known for agriculture, winter tourism, and earthquakes  
+
+---
+
+# Data Sources
+
+- Japan population statistics  
+- Climate records (monthly temperatures)  
+- USGS-style earthquake catalog  
+
+---
+
+# Population Trend
+
+```{r}
+ggplot(pop, aes(year, population)) +
+  geom_line() +
+  theme_minimal()
+```
+
+---
+
+# Aging Population
+
+```{r}
+ggplot(pop, aes(year, pct_over65)) +
+  geom_line() +
+  theme_minimal()
+```
+
+---
+
+# Climate Warming
+
+```{r}
+climate_annual <- climate |>
+  group_by(year) |>
+  summarise(mean_temp = mean(mean_temp, na.rm = TRUE))
+
+ggplot(climate_annual, aes(year, mean_temp)) +
+  geom_line() +
+  geom_smooth(se = FALSE) +
+  theme_minimal()
+```
+
+---
+
+# Seasonal Temperature
+
+```{r}
+ggplot(climate, aes(factor(month), mean_temp)) +
+  geom_boxplot() +
+  theme_minimal()
+```
+
+---
+
+# Earthquake Distribution
+
+```{r}
+ggplot(eq, aes(mag)) +
+  geom_histogram(bins = 30) +
+  theme_minimal()
+```
+
+---
+
+# Key Insights
+
+- Persistent population decline and rapid aging  
+- Clear long-term warming trend  
+- Ongoing earthquake exposure  
+
+---
+
+# Thank You
